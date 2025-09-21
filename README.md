@@ -1,75 +1,33 @@
-# OpenFrame Overview
+Project Title
 
-The OpenFrame Project provides an empty harness chip that differs significantly from the Caravel and Caravan designs. Unlike Caravel and Caravan, which include integrated SoCs and additional features, OpenFrame offers only the essential padframe, providing users with a clean slate for their custom designs.
+8-bit ALU with Barrel Shifter and Status Flags — SKY130 Open-Source Implementation
 
-<img width="256" alt="Screenshot 2024-06-24 at 12 53 39 PM" src="https://github.com/efabless/openframe_timer_example/assets/67271180/ff58b58b-b9c8-4d5e-b9bc-bf344355fa80">
+Project Description
 
-## Key Characteristics of OpenFrame
+This project implements a compact 8-bit Arithmetic Logic Unit (ALU) integrated with a barrel shifter in Verilog, targeting SkyWater SKY130 standard cells.
 
-1. **Minimalist Design:** 
-   - No integrated SoC or additional circuitry.
-   - Only includes the padframe, a power-on-reset circuit, and a digital ROM containing the 32-bit project ID.
+The ALU supports a range of arithmetic and logical operations, including addition, subtraction, increment, decrement, AND, OR, XOR, and NOT. The barrel shifter adds flexible variable left/right shift operations in a single cycle, controlled via a shift amount input.
 
-2. **Padframe Compatibility:**
-   - The padframe design and pin placements match those of the Caravel and Caravan chips, ensuring compatibility and ease of transition between designs.
-   - Pin types are identical, with power and ground pins positioned similarly and the same power domains available.
+In addition, the ALU produces CPU-style status flags: Zero (Z), Carry (C), Negative (N), and Overflow (V), which allow conditional operations and serve as essential indicators for processor datapaths.
 
-3. **Flexibility:**
-   - Provides full access to all GPIO controls.
-   - Maximizes the user project area, allowing for greater customization and integration of alternative SoCs or user-specific projects at the same hierarchy level.
+This project provides a modular, reusable IP block suitable for integration into mini CPUs, microcontrollers, or digital systems requiring arithmetic, logic, and bit-shifting operations. It is fully synthesizable, verifiable with comprehensive testbenches, and compatible with the OpenLane flow for tapeout readiness.
 
-4. **Simplified I/O:**
-   - Pins that previously connected to CPU functions (e.g., flash controller interface, SPI interface, UART) are now repurposed as general-purpose I/O, offering flexibility for various applications.
+Project Proposal
 
-The OpenFrame harness is ideal for those looking to implement custom SoCs or integrate user projects without the constraints of an existing SoC.
+The objective of this project is to design a highly functional, small-scale datapath unit that demonstrates realistic ALU operations, flexible bit manipulation, and flag generation in an 8-bit hardware context.
 
-## Features
+Key deliverables include:
 
-1. 44 configurable GPIOs.
-2. User area of approximately 15mm².
-3. Supports digital, analog, or mixed-signal designs.
+Modular Verilog RTL for the ALU and barrel shifter
 
-# openframe_timer_example
+Functional testbenches covering arithmetic, logic, and shift operations, as well as status flag verification
 
-This example implements a simple timer and connects it to the GPIOs.
+STA and SDF-ready constraints for timing verification
 
-## Installation and Setup
+OpenLane flow configuration and reproducible results for SkyWater SKY130 standard cells
 
-First, clone the repository:
+Documentation with step-by-step build and simulation instructions, screenshots, and demonstration video
 
-```bash
-git clone https://github.com/efabless/openframe_timer_example.git
-cd openframe_timer_example
-```
+Open-source licensing (Apache 2.0) to enable public reuse and contribution
 
-Then, download all dependencies:
-
-```bash
-make setup
-```
-
-## Hardening the Design
-
-In this example, we will harden the timer. You will need to harden your own design similarly.
-
-```bash
-make user_proj_timer
-```
-
-Once you have hardened your design, integrate it into the OpenFrame wrapper:
-
-```bash
-make openframe_project_wrapper
-```
-
-## Important Notes
-
-1. **Connecting to Power:**
-   - Ensure your design is connected to power using the power pins on the wrapper.
-   - Use the `vccd1_connection` and `vssd1_connection` macros, which contain the necessary vias and nets for power connections.
-
-2. **Flattening the Design:**
-   - If you plan to flatten your design within the `openframe_project_wrapper`, do not buffer the analog pins using standard cells.
-
-3. **Running Custom Steps:**
-   - Execute the custom step in OpenLane that copies the power pins from the template DEF. If this step is skipped, the precheck will fail, and your design will not be powered.
+This project demonstrates practical digital design principles, combining combinational and sequential logic, modular RTL coding, and verification workflows. It offers a balanced complexity that is both educational and applicable in real-world digital systems, making it an ideal candidate for open-source hardware projects.
